@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#341132">
+<title>Træning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3EFF3; --flade:#FFFFFF; --flade2:#EAE2EA; --tekst:#25101F; --daempet:#6C5869;
+  --linje:#DCCFDA; --brand:#341132; --knap:#341132; --knap-tekst:#FFFFFF;
+  --ok:#2C8A6C; --ok-flade:#DDF1E9; --fare:#B23A48;
+  --tal:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --krop:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#160814; --flade:#22101F; --flade2:#2E182B; --tekst:#F2E9F1; --daempet:#B39EB0;
+    --linje:#3D2639; --brand:#D7A9D0; --knap:#D7A9D0; --knap-tekst:#1E0B1B;
+    --ok:#62CDA6; --ok-flade:#173329; --fare:#F08A96;
+    color-scheme:dark;
+  }
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tekst);font:16px/1.45 var(--krop);-webkit-text-size-adjust:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--linje)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.top-ind{max-width:640px;margin:0 auto;display:flex;align-items:flex-end;gap:16px;padding:12px 16px 0}
+.logo{font:700 30px/1 var(--tal);letter-spacing:.01em;color:var(--brand);margin:0 auto 10px 0}
+.fane{background:none;border:0;padding:8px 2px 10px;font-weight:600;color:var(--daempet);border-bottom:3px solid transparent}
+.fane[aria-current="true"]{color:var(--tekst);border-color:var(--brand)}
+
+main{max-width:640px;margin:0 auto;padding:16px 16px 120px}
+h1{font:700 32px/1.05 var(--tal);margin:4px 0 6px}
+h2{font:700 20px/1.2 var(--tal);margin:22px 0 8px;letter-spacing:.01em}
+.daempet{color:var(--daempet)}
+.lille{font-size:14px}
+
+.vaerktoej{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.vaerktoej select{flex:1;padding:9px 10px;border-radius:10px;border:1px solid var(--linje);background:var(--flade)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.chip{flex:none;border:1px solid var(--linje);background:var(--flade);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--knap);color:var(--knap-tekst);border-color:var(--knap)}
+
+.prog{display:flex;width:100%;text-align:left;gap:14px;align-items:stretch;background:var(--flade);border:1px solid var(--linje);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.tid{flex:none;width:64px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;border-right:1px solid var(--linje);padding-right:10px}
+.tid b{font:700 40px/0.9 var(--tal);color:var(--brand)}
+.tid small{font-size:12px;color:var(--daempet);margin-top:4px;line-height:1.2}
+.info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.navn{font-weight:600;font-size:17px}
+.sum{font-size:14px;color:var(--daempet)}
+.sidst{font-size:13px;color:var(--ok)}
+
+.knapper{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.knap{border:0;border-radius:12px;padding:12px 18px;background:var(--knap);color:var(--knap-tekst);font-weight:600}
+.knap.sek{background:var(--flade2);color:var(--tekst)}
+.knap.fare{background:transparent;color:var(--fare);border:1px solid var(--fare)}
+.knap.lille{padding:7px 12px;font-size:14px;border-radius:10px}
+.knap.bred{flex:1}
+
+.runde{background:var(--flade);border:1px solid var(--linje);border-radius:14px;padding:6px 14px 10px;margin-bottom:12px}
+.runde h3{font:700 16px/1 var(--tal);letter-spacing:.02em;color:var(--daempet);margin:10px 0 4px}
+.linje{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--linje)}
+.runde h3 + .linje{border-top:0}
+.maal{font-weight:600;white-space:nowrap}
+.note{font-size:13px;color:var(--daempet)}
+
+/* Træning */
+.saet{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--linje)}
+.runde h3 + .saet{border-top:0}
+.flue{width:40px;height:40px;border-radius:12px;border:2px solid var(--linje);background:var(--bg);font-size:22px;line-height:1;color:transparent}
+.saet.done .flue{background:var(--ok);border-color:var(--ok);color:#fff}
+.saet.done .s-navn{color:var(--daempet);text-decoration:line-through}
+.s-felter{display:flex;gap:6px}
+.s-felter label{display:flex;flex-direction:column;font-size:11px;color:var(--daempet);text-align:center}
+.s-felter input{width:58px;padding:7px 4px;text-align:center;border:1px solid var(--linje);border-radius:9px;background:var(--bg);font-weight:600}
+.bund{position:fixed;left:0;right:0;bottom:0;background:var(--flade);border-top:1px solid var(--linje);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.bund-ind{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.ur{font:700 34px/1 var(--tal);min-width:92px;font-variant-numeric:tabular-nums}
+.fremgang{font-size:13px;color:var(--daempet)}
+
+/* Redigering */
+.felt{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;font-size:14px;font-weight:500}
+.felt input,.felt textarea{padding:10px 12px;border:1px solid var(--linje);border-radius:10px;background:var(--flade);font-weight:400;font-size:16px}
+textarea{min-height:80px;resize:vertical}
+.r-ovelse{display:grid;grid-template-columns:1fr 54px 54px 54px 34px;gap:6px;align-items:end;padding:8px 0;border-top:1px solid var(--linje)}
+.runde h3 + .r-ovelse{border-top:0}
+.r-ovelse label{display:flex;flex-direction:column;font-size:11px;color:var(--daempet);gap:2px}
+.r-ovelse input[type=text],.r-ovelse input[type=number]{width:100%;padding:8px 6px;border:1px solid var(--linje);border-radius:9px;background:var(--bg);font-size:16px}
+.r-side{grid-column:1 / -1;display:flex;gap:14px;align-items:center;font-size:13px}
+.r-side label{flex-direction:row;align-items:center;gap:6px;font-size:13px;color:var(--tekst)}
+.r-side input[type=text]{flex:1;padding:6px 8px;border:1px solid var(--linje);border-radius:9px;background:var(--bg);font-size:14px}
+.x{border:0;background:none;color:var(--fare);font-size:22px;padding:4px;line-height:1}
+.est{font-size:14px;color:var(--daempet);margin:-6px 0 12px}
+
+.log{display:block;width:100%;text-align:left;background:var(--flade);border:1px solid var(--linje);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.log b{display:block;font-size:17px}
+.tom{border:1px dashed var(--linje);border-radius:14px;padding:20px;text-align:center;color:var(--daempet)}
+.fejl{background:var(--flade);border:1px solid var(--fare);color:var(--fare);border-radius:12px;padding:12px;margin-bottom:12px}
+pre{background:var(--flade);border:1px solid var(--linje);border-radius:10px;padding:10px;overflow-x:auto;font-size:12px}
+@media (prefers-reduced-motion:no-preference){.saet .flue{transition:background .15s}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-ind">
+  <p class="logo">Træning</p>
+  <button class="fane" data-a="fane" data-v="liste">Programmer</button>
+  <button class="fane" data-a="fane" data-v="historik">Historik</button>
+</div></header>
+<main id="app"><p class="daempet">Henter…</p></main>
+<div id="bund"></div>
+
+<script>
+/* ===== Opsætning: indsæt dit Supabase-projekts URL og publishable/anon key ===== */
+const SB_URL = 'https://jmkicrzqmzbetzzjoqtd.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impta2ljcnpxbXpiZXR6empvcXRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1MzY1NDUsImV4cCI6MjEwODExMjU0NX0.BHSSKBFBVZ0qESq-LFkUccpCFRsbhq50DQi4bxK6jx4';
+
+function cfg(){
+  if(!SB_URL.startsWith('INDSÆT')) return {u:SB_URL,k:SB_KEY};
+  try{ return {u:localStorage.getItem('tr_url')||'',k:localStorage.getItem('tr_key')||''}; }catch(e){ return {u:'',k:''}; }
+}
+async function api(sti,metode='GET',krop){
+  const {u,k}=cfg();
+  const h={apikey:k,'Content-Type':'application/json',Prefer:'return=representation'};
+  if(!k.startsWith('sb_publishable_')) h.Authorization='Bearer '+k;
+  const r=await fetch(u.replace(/\/$/,'')+'/rest/v1/'+sti,{method:metode,headers:h,body:krop===undefined?undefined:JSON.stringify(krop)});
+  const t=await r.text();
+  if(!r.ok) throw new Error(t||('HTTP '+r.status));
+  return t?JSON.parse(t):null;
+}
+
+const S={programmer:[],logs:[],visning:'liste',sort:'tid-op',filter:'alle',valgt:null,kladde:null,aktiv:null,logValgt:null,fejl:''};
+const app=document.getElementById('app'), bund=document.getElementById('bund');
+
+/* ===== Hjælpere ===== */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const kopi=o=>JSON.parse(JSON.stringify(o));
+const num=v=>{ if(v===''||v==null) return null; const n=Number(String(v).replace(',','.')); return isFinite(n)?n:null; };
+function estimer(runder){
+  // Grov tommelfingerregel: 3 sek pr. rep (x2 pr. side), angivne sekunder, 15 sek skift pr. øvelse, 60 sek pause mellem runder
+  let s=0;
+  (runder||[]).forEach((r,i)=>{ r.forEach(it=>{ const m=it.pr_side?2:1; if(it.sek) s+=it.sek*m; else if(it.reps) s+=it.reps*3*m; s+=15; }); if(i<runder.length-1) s+=60; });
+  return Math.max(1,Math.round(s/60));
+}
+const minutter=p=>p.minutter??estimer(p.runder);
+const erEstimat=p=>p.minutter==null||!!p.estimat;
+function fmtMaal(it){
+  let t='';
+  if(it.sek) t=(it.sek>=60&&it.sek%60===0)?`${it.sek/60} min`:`${it.sek} sek`;
+  else if(it.reps) t=String(it.reps);
+  if(t&&it.pr_side) t+='/side';
+  if(it.kg) t+=`, ${it.kg} kg`;
+  return t;
+}
+function opsummer(p){
+  const r=p.runder||[]; const ens=r.length>1&&r.every(x=>JSON.stringify(x)===JSON.stringify(r[0]));
+  const navne=[...new Set(r.flat().map(i=>i.ovelse))];
+  const del=ens?`${r.length} runder af ${r[0].length} øvelser`:(r.length>1?`${r.length} runder`:`${navne.length} øvelser`);
+  return del+': '+navne.slice(0,3).join(', ')+(navne.length>3?' m.fl.':'');
+}
+const dato=d=>new Date(d).toLocaleDateString('da-DK',{day:'numeric',month:'short'});
+const datoLang=d=>new Date(d).toLocaleDateString('da-DK',{weekday:'long',day:'numeric',month:'long'})+' kl. '+new Date(d).toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'});
+const fmtUr=ms=>{ const s=Math.floor(ms/1000); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
+const senest=id=>S.logs.find(l=>l.program_id===id)?.dato;
+function sidsteKg(ovelse){
+  const n=(ovelse||'').toLowerCase();
+  for(const l of S.logs) for(const s of (l.saet||[])) if(s.done&&s.kg!=null&&(s.ovelse||'').toLowerCase()===n) return s.kg;
+  return null;
+}
+const tomOvelse=()=>({ovelse:'',reps:null,pr_side:false,sek:null,kg:null,note:''});
+function gemAktiv(){ try{ S.aktiv?localStorage.setItem('tr_aktiv',JSON.stringify(S.aktiv)):localStorage.removeItem('tr_aktiv'); }catch(e){} }
+
+/* ===== Skærm tændt ===== */
+let wl=null, vaagenOn=false;
+async function vaagen(on){
+  vaagenOn=on;
+  try{ if(on&&'wakeLock' in navigator){ wl=await navigator.wakeLock.request('screen'); } else if(!on&&wl){ await wl.release(); wl=null; } }catch(e){}
+  const b=document.getElementById('vaagen'); if(b) b.textContent=vaagenOn?'Skærm: tændt':'Skærm: normal';
+}
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&vaagenOn) vaagen(true); });
+
+/* ===== Data ===== */
+async function hent(){
+  try{
+    const [p,l]=await Promise.all([
+      api('traening_programmer?select=*&order=oprettet.desc'),
+      api('traening_logs?select=*&order=dato.desc&limit=500')
+    ]);
+    S.programmer=p; S.logs=l; S.fejl='';
+  }catch(e){ S.fejl='Kunne ikke hente data fra Supabase: '+e.message; }
+}
+
+/* ===== Visninger ===== */
+function render(){
+  document.querySelectorAll('.fane').forEach(f=>f.setAttribute('aria-current',String((f.dataset.v==='historik')===['historik','log'].includes(S.visning))));
+  bund.innerHTML='';
+  const fejl=S.fejl?`<div class="fejl">${esc(S.fejl)}</div>`:'';
+  const v={liste:visListe,program:visProgram,traen:visTraen,rediger:visRediger,import:visImport,historik:visHistorik,log:visLog,opsaet:visOpsaet}[S.visning];
+  app.innerHTML=fejl+v();
+  window.scrollTo(0,0);
+}
+
+function visListe(){
+  let l=S.programmer.slice();
+  const f=S.filter;
+  if(f!=='alle') l=l.filter(p=>{const m=minutter(p); return f==='30+'?m>30:m<=Number(f);});
+  const sorter={
+    'tid-op':(a,b)=>minutter(a)-minutter(b),
+    'tid-ned':(a,b)=>minutter(b)-minutter(a),
+    'navn':(a,b)=>a.navn.localeCompare(b.navn,'da'),
+    'senest':(a,b)=>(senest(b)||'').localeCompare(senest(a)||'')
+  };
+  l.sort(sorter[S.sort]);
+  const chips=[['alle','Alle'],['10','Op til 10 min'],['20','Op til 20 min'],['30','Op til 30 min'],['30+','Over 30 min']];
+  const kort=l.map(p=>{ const e=erEstimat(p), s=senest(p.id); return `
+    <button class="prog" data-a="vis" data-id="${p.id}">
+      <span class="tid"><b>${e?'~':''}${minutter(p)}</b><small>${e?'min, estimat':'min'}</small></span>
+      <span class="info"><span class="navn">${esc(p.navn)}</span><span class="sum">${esc(opsummer(p))}</span>${s?`<span class="sidst">Sidst trænet ${dato(s)}</span>`:''}</span>
+    </button>`; }).join('');
+  return `
+    <div class="vaerktoej"><select data-a="sort" aria-label="Sortér programmer">
+      <option value="tid-op"${S.sort==='tid-op'?' selected':''}>Korteste først</option>
+      <option value="tid-ned"${S.sort==='tid-ned'?' selected':''}>Længste først</option>
+      <option value="navn"${S.sort==='navn'?' selected':''}>Navn</option>
+      <option value="senest"${S.sort==='senest'?' selected':''}>Senest trænet</option>
+    </select></div>
+    <div class="chips">${chips.map(([v,t])=>`<button class="chip" data-a="filter" data-v="${v}" aria-pressed="${S.filter===v}">${t}</button>`).join('')}</div>
+    ${kort||`<div class="tom">${S.programmer.length?'Ingen programmer passer til tidsfilteret.':'Ingen programmer endnu. Opret en plan, eller indsæt en fra Claude.'}</div>`}
+    <div class="knapper"><button class="knap" data-a="ny">Ny plan</button><button class="knap sek" data-a="import">Indsæt fra Claude</button></div>`;
+}
+
+function rundeHtml(r,i,n){
+  return `<div class="runde">${n>1?`<h3>Runde ${i+1}</h3>`:''}${r.map(it=>`
+    <div class="linje"><span>${esc(it.ovelse)}${it.note?`<br><span class="note">${esc(it.note)}</span>`:''}</span><span class="maal">${esc(fmtMaal(it))}</span></div>`).join('')}</div>`;
+}
+function visProgram(){
+  const p=S.programmer.find(x=>x.id===S.valgt); if(!p){S.visning='liste';return visListe();}
+  const r=p.runder||[]; const ens=r.length>1&&r.every(x=>JSON.stringify(x)===JSON.stringify(r[0]));
+  const plan=ens?`<p class="daempet">Gentag ${r.length} gange:</p>`+rundeHtml(r[0],0,1):r.map((x,i)=>rundeHtml(x,i,r.length)).join('');
+  return `
+    <button class="knap sek lille" data-a="tilbage">Tilbage</button>
+    <h1>${esc(p.navn)}</h1>
+    <p class="daempet">${erEstimat(p)?`Ca. ${minutter(p)} min (estimat)`:`${minutter(p)} min`}${p.kilde?`. Kilde: ${esc(p.kilde)}`:''}</p>
+    ${p.beskrivelse?`<p>${esc(p.beskrivelse)}</p>`:''}
+    ${plan}
+    <div class="knapper"><button class="knap bred" data-a="start">Start træning</button><button class="knap sek" data-a="rediger">Redigér</button><button class="knap fare" data-a="slet-prog">Slet</button></div>`;
+}
+
+function visTraen(){
+  const a=S.aktiv; let sidst=0;
+  const rows=a.saet.map((s,i)=>{
+    const h=s.runde!==sidst?`${sidst?'</div>':''}<div class="runde"><h3>Runde ${s.runde}</h3>`:''; sidst=s.runde;
+    const felter=[];
+    if(s.maal_sek!=null) felter.push(`<label>sek<input inputmode="numeric" data-t="${i}" data-f="sek" value="${s.sek??''}"></label>`);
+    else if(s.maal_reps!=null) felter.push(`<label>reps${s.pr_side?'/side':''}<input inputmode="numeric" data-t="${i}" data-f="reps" value="${s.reps??''}"></label>`);
+    if(s.maal_sek==null&&s.maal_reps!=null) felter.push(`<label>kg<input inputmode="decimal" data-t="${i}" data-f="kg" value="${s.kg??''}" placeholder="–"></label>`);
+    return h+`<div class="saet${s.done?' done':''}" id="s${i}">
+      <button class="flue" data-a="flueben" data-i="${i}" aria-label="Markér ${esc(s.ovelse)} som klaret" aria-pressed="${s.done}">✓</button>
+      <span><span class="s-navn">${esc(s.ovelse)}</span><br><span class="note">Mål: ${esc(s.maal||'gennemfør')}</span></span>
+      <span class="s-felter">${felter.join('')}</span></div>`;
+  }).join('')+'</div>';
+  const klaret=a.saet.filter(s=>s.done).length;
+  bund.innerHTML=`<div class="bund"><div class="bund-ind">
+    <span><span class="ur" id="ur">${fmtUr(Date.now()-a.start)}</span><br><span class="fremgang" id="frem">${klaret} af ${a.saet.length} sæt</span></span>
+    <button class="knap bred" data-a="gem-traening">Gem træning</button></div></div>`;
+  return `<h1>${esc(a.navn)}</h1>
+    <div class="knapper" style="margin:0 0 14px"><button class="knap sek lille" id="vaagen" data-a="vaagen">${vaagenOn?'Skærm: tændt':'Skærm: normal'}</button><button class="knap fare lille" data-a="afbryd">Afbryd</button></div>
+    ${rows}`;
+}
+
+function visRediger(){
+  const k=S.kladde;
+  const runder=k.runder.map((r,ri)=>`<div class="runde"><h3>Runde ${ri+1}</h3>${r.map((it,ii)=>`
+    <div class="r-ovelse">
+      <label>Øvelse<input type="text" data-r="${ri}" data-i="${ii}" data-f="ovelse" value="${esc(it.ovelse)}"></label>
+      <label>Reps<input type="number" inputmode="numeric" data-r="${ri}" data-i="${ii}" data-f="reps" value="${it.reps??''}"></label>
+      <label>Sek<input type="number" inputmode="numeric" data-r="${ri}" data-i="${ii}" data-f="sek" value="${it.sek??''}"></label>
+      <label>Kg<input type="number" inputmode="decimal" step="0.5" data-r="${ri}" data-i="${ii}" data-f="kg" value="${it.kg??''}"></label>
+      <button class="x" data-a="slet-ovelse" data-r="${ri}" data-i="${ii}" aria-label="Slet øvelse">×</button>
+      <div class="r-side"><label><input type="checkbox" data-r="${ri}" data-i="${ii}" data-f="pr_side"${it.pr_side?' checked':''}> Pr. side</label>
+        <input type="text" placeholder="Note" data-r="${ri}" data-i="${ii}" data-f="note" value="${esc(it.note)}"></div>
+    </div>`).join('')}
+    <div class="knapper" style="margin-top:8px">
+      <button class="knap sek lille" data-a="tilfoej-ovelse" data-r="${ri}">Tilføj øvelse</button>
+      <button class="knap sek lille" data-a="kopier-runde" data-r="${ri}">Kopiér runde</button>
+      ${k.runder.length>1?`<button class="knap fare lille" data-a="slet-runde" data-r="${ri}">Slet runde</button>`:''}
+    </div></div>`).join('');
+  return `<h1>${k.id?'Redigér plan':'Ny plan'}</h1>
+    <label class="felt">Navn<input type="text" data-f="navn" value="${esc(k.navn)}"></label>
+    <label class="felt">Minutter<input type="number" inputmode="numeric" data-f="minutter" value="${k.minutter??''}" placeholder="Tom = estimat"></label>
+    <p class="est" id="est">Estimat ud fra øvelserne: ca. ${estimer(k.runder)} min</p>
+    <label class="felt">Kilde<input type="text" data-f="kilde" value="${esc(k.kilde)}"></label>
+    <label class="felt">Beskrivelse<textarea data-f="beskrivelse">${esc(k.beskrivelse)}</textarea></label>
+    ${runder}
+    <button class="knap sek" data-a="tilfoej-runde">Tilføj runde</button>
+    <div class="knapper"><button class="knap bred" data-a="gem-prog">Gem plan</button><button class="knap sek" data-a="annuller">Annullér</button></div>`;
+}
+
+function visImport(){
+  return `<button class="knap sek lille" data-a="tilbage">Tilbage</button>
+    <h1>Indsæt fra Claude</h1>
+    <p class="daempet">Send et screenshot til Claude i chatten. Du får en tekstblok tilbage, som du indsætter her.</p>
+    <label class="felt">Tekst fra Claude<textarea id="imp" style="min-height:200px" spellcheck="false"></textarea></label>
+    <div class="knapper"><button class="knap bred" data-a="import-kor">Tilføj program</button></div>
+    <h2>Format</h2>
+    <pre>{"navn":"…","kilde":"…","minutter":20,"estimat":true,
+ "gentag":3,
+ "ovelser":[{"ovelse":"Squats","reps":20},
+            {"ovelse":"Lunges","reps":10,"pr_side":true},
+            {"ovelse":"Planke","sek":60}]}</pre>
+    <p class="daempet lille">Alternativt "runder": [[…],[…]] når runderne er forskellige. Flere programmer kan indsættes som en liste.</p>`;
+}
+
+function visHistorik(){
+  if(!S.logs.length) return `<div class="tom">Ingen træninger endnu. Start et program for at logge det.</div>`;
+  return S.logs.map(l=>{ const s=l.saet||[]; return `<button class="log" data-a="vis-log" data-id="${l.id}">
+    <b>${esc(l.program_navn||'Træning')}</b>
+    <span class="daempet lille">${dato(l.dato)}, ${Math.round((l.varighed_sek||0)/60)} min, ${s.filter(x=>x.done).length} af ${s.length} sæt</span></button>`; }).join('');
+}
+function visLog(){
+  const l=S.logs.find(x=>x.id===S.logValgt); if(!l){S.visning='historik';return visHistorik();}
+  const pr={}; (l.saet||[]).forEach(s=>(pr[s.runde]=pr[s.runde]||[]).push(s));
+  const n=Object.keys(pr).length;
+  return `<button class="knap sek lille" data-a="fane" data-v="historik">Tilbage</button>
+    <h1>${esc(l.program_navn||'Træning')}</h1>
+    <p class="daempet">${datoLang(l.dato)}. Varighed ${fmtUr((l.varighed_sek||0)*1000)}.</p>
+    ${Object.entries(pr).map(([r,ss])=>`<div class="runde">${n>1?`<h3>Runde ${r}</h3>`:''}${ss.map(s=>{
+      const v=s.sek!=null?`${s.sek} sek`:(s.reps!=null?`${s.reps}${s.pr_side?'/side':''}`:'');
+      return `<div class="linje"><span>${s.done?'✓':'○'} ${esc(s.ovelse)}</span><span class="maal">${v}${s.kg!=null?` × ${s.kg} kg`:''}</span></div>`;}).join('')}</div>`).join('')}
+    <div class="knapper"><button class="knap fare" data-a="slet-log">Slet træning</button></div>`;
+}
+
+function visOpsaet(){
+  return `<h1>Forbind til Supabase</h1>
+    <p class="daempet">Indsæt projektets URL og publishable key (eller anon key). Gemmes kun i denne browser. Du kan også skrive dem øverst i index.html.</p>
+    <label class="felt">Project URL<input type="url" id="o-url" placeholder="https://xxxx.supabase.co"></label>
+    <label class="felt">Publishable key<input type="text" id="o-key"></label>
+    <div class="knapper"><button class="knap" data-a="gem-opsaet">Forbind</button></div>`;
+}
+
+/* ===== Handlinger ===== */
+function normaliser(o){
+  let runder=o.runder;
+  if(!runder&&Array.isArray(o.ovelser)) runder=Array.from({length:Math.max(1,o.gentag||1)},()=>kopi(o.ovelser));
+  if(!Array.isArray(runder)||!runder.every(Array.isArray)) throw new Error(`"${o.navn||'uden navn'}" mangler "ovelser" eller "runder".`);
+  runder=runder.map(r=>r.map(it=>({ovelse:String(it.ovelse||'').trim(),reps:num(it.reps),pr_side:!!it.pr_side,sek:num(it.sek),kg:num(it.kg),note:it.note||''})).filter(it=>it.ovelse));
+  if(!o.navn) throw new Error('Et program mangler "navn".');
+  return {navn:o.navn,kilde:o.kilde||null,beskrivelse:o.beskrivelse||null,minutter:num(o.minutter),estimat:!!o.estimat,runder};
+}
+
+async function handling(a,el){
+  const d=el.dataset;
+  try{
+  switch(a){
+    case 'fane': S.visning=d.v; S.fejl=''; break;
+    case 'filter': S.filter=d.v; break;
+    case 'vis': S.valgt=d.id; S.visning='program'; break;
+    case 'tilbage': S.visning='liste'; break;
+    case 'ny': S.kladde={navn:'',kilde:'',beskrivelse:'',minutter:null,estimat:false,runder:[[tomOvelse()]]}; S.visning='rediger'; break;
+    case 'import': S.visning='import'; break;
+    case 'rediger': S.kladde=kopi(S.programmer.find(p=>p.id===S.valgt)); S.kladde.runder=S.kladde.runder.map(r=>r.map(it=>Object.assign(tomOvelse(),it))); S.visning='rediger'; break;
+    case 'annuller': S.visning=S.kladde.id?'program':'liste'; break;
+    case 'slet-prog':
+      if(!confirm('Slet programmet? Historikken bevares.')) return;
+      await api('traening_programmer?id=eq.'+S.valgt,'DELETE'); await hent(); S.visning='liste'; break;
+    case 'tilfoej-ovelse': S.kladde.runder[d.r].push(tomOvelse()); break;
+    case 'slet-ovelse': S.kladde.runder[d.r].splice(d.i,1); if(!S.kladde.runder[d.r].length) S.kladde.runder[d.r].push(tomOvelse()); break;
+    case 'kopier-runde': S.kladde.runder.splice(+d.r+1,0,kopi(S.kladde.runder[d.r])); break;
+    case 'slet-runde': S.kladde.runder.splice(d.r,1); break;
+    case 'tilfoej-runde': S.kladde.runder.push([tomOvelse()]); break;
+    case 'gem-prog': {
+      const k=S.kladde; if(!k.navn.trim()){ alert('Giv planen et navn.'); return; }
+      const runder=k.runder.map(r=>r.filter(it=>it.ovelse.trim())).filter(r=>r.length);
+      if(!runder.length){ alert('Tilføj mindst én øvelse.'); return; }
+      const krop={navn:k.navn.trim(),kilde:k.kilde||null,beskrivelse:k.beskrivelse||null,minutter:k.minutter,estimat:k.minutter==null?false:!!k.estimat,runder};
+      const res=k.id?await api('traening_programmer?id=eq.'+k.id,'PATCH',krop):await api('traening_programmer','POST',krop);
+      await hent(); S.valgt=res[0].id; S.visning='program'; break;
+    }
+    case 'import-kor': {
+      const t=document.getElementById('imp').value.trim().replace(/^```(json)?|```$/g,'').trim();
+      let data; try{ data=JSON.parse(t); }catch(e){ alert('Teksten er ikke gyldig JSON. Kopiér hele blokken fra Claude.'); return; }
+      const liste=(Array.isArray(data)?data:[data]).map(normaliser);
+      await api('traening_programmer','POST',liste); await hent(); S.visning='liste';
+      alert(liste.length===1?'Programmet er tilføjet.':`${liste.length} programmer er tilføjet.`); break;
+    }
+    case 'start': {
+      const p=S.programmer.find(x=>x.id===S.valgt); const saet=[];
+      p.runder.forEach((r,ri)=>r.forEach(it=>saet.push({runde:ri+1,ovelse:it.ovelse,maal:fmtMaal(it),maal_reps:it.reps??null,maal_sek:it.sek??null,pr_side:!!it.pr_side,reps:it.reps??null,sek:it.sek??null,kg:it.reps!=null?(it.kg??sidsteKg(it.ovelse)):null,done:false})));
+      S.aktiv={program_id:p.id,navn:p.navn,start:Date.now(),saet}; gemAktiv(); vaagen(true); S.visning='traen'; break;
+    }
+    case 'flueben': {
+      const s=S.aktiv.saet[d.i]; s.done=!s.done; gemAktiv();
+      document.getElementById('s'+d.i).classList.toggle('done',s.done); el.setAttribute('aria-pressed',s.done);
+      document.getElementById('frem').textContent=`${S.aktiv.saet.filter(x=>x.done).length} af ${S.aktiv.saet.length} sæt`;
+      return;
+    }
+    case 'vaagen': vaagen(!vaagenOn); return;
+    case 'afbryd': if(!confirm('Afbryd uden at gemme?')) return; S.aktiv=null; gemAktiv(); vaagen(false); S.visning='program'; break;
+    case 'gem-traening': {
+      const a2=S.aktiv;
+      if(!a2.saet.some(s=>s.done)&&!confirm('Ingen sæt er markeret. Gem alligevel?')) return;
+      await api('traening_logs','POST',{program_id:a2.program_id,program_navn:a2.navn,varighed_sek:Math.round((Date.now()-a2.start)/1000),
+        saet:a2.saet.map(({runde,ovelse,reps,sek,kg,pr_side,done})=>({runde,ovelse,reps,sek,kg,pr_side,done}))});
+      S.aktiv=null; gemAktiv(); vaagen(false); await hent(); S.logValgt=S.logs[0]?.id; S.visning='log'; break;
+    }
+    case 'vis-log': S.logValgt=d.id; S.visning='log'; break;
+    case 'slet-log': if(!confirm('Slet denne træning fra historikken?')) return; await api('traening_logs?id=eq.'+S.logValgt,'DELETE'); await hent(); S.visning='historik'; break;
+    case 'gem-opsaet': {
+      const u=document.getElementById('o-url').value.trim(), k=document.getElementById('o-key').value.trim();
+      try{ localStorage.setItem('tr_url',u); localStorage.setItem('tr_key',k); }catch(e){ alert('Browseren tillader ikke lagring. Skriv URL og nøgle øverst i index.html i stedet.'); return; }
+      await start(); return;
+    }
+    default: return;
+  }
+  }catch(e){ S.fejl='Noget gik galt: '+e.message; }
+  render();
+}
+
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-a]'); if(b&&b.tagName!=='SELECT') handling(b.dataset.a,b); });
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset.a==='sort'){ S.sort=t.value; render(); return; }
+  if(S.visning==='rediger'&&t.type==='checkbox'){ S.kladde.runder[t.dataset.r][t.dataset.i].pr_side=t.checked; opdaterEst(); }
+});
+document.addEventListener('input',e=>{
+  const t=e.target, d=t.dataset;
+  if(S.visning==='traen'&&d.t!=null){ S.aktiv.saet[d.t][d.f]=num(t.value); gemAktiv(); return; }
+  if(S.visning==='rediger'&&d.f){
+    const talFelt=['reps','sek','kg','minutter'].includes(d.f);
+    const v=talFelt?num(t.value):t.value;
+    if(d.r!=null) S.kladde.runder[d.r][d.i][d.f]=v; else { S.kladde[d.f]=v; if(d.f==='minutter') S.kladde.estimat=false; }
+    opdaterEst();
+  }
+});
+function opdaterEst(){ const e=document.getElementById('est'); if(e) e.textContent=`Estimat ud fra øvelserne: ca. ${estimer(S.kladde.runder)} min`; }
+setInterval(()=>{ const u=document.getElementById('ur'); if(u&&S.aktiv) u.textContent=fmtUr(Date.now()-S.aktiv.start); },1000);
+
+async function start(){
+  const {u,k}=cfg();
+  if(!u||!k){ S.visning='opsaet'; render(); return; }
+  await hent();
+  try{ const a=JSON.parse(localStorage.getItem('tr_aktiv')||'null'); if(a){ S.aktiv=a; S.visning='traen'; } else S.visning='liste'; }catch(e){ S.visning='liste'; }
+  render();
+}
+start();
+</script>
+</body>
+</html>
